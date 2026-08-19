@@ -1,0 +1,2647 @@
+{
+  "info": {
+    "_postman_id": "b7e423f1-cac7-4745-a620-eef88a78ecc2",
+    "name": "Ecommerce API Project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55946805",
+    "_collection_link": "https://go.postman.co/collection/55946805-b7e423f1-cac7-4745-a620-eef88a78ecc2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Intro",
+      "item": [
+        {
+          "name": "Test",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/test",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limiting Resource",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/?limit=10&select=title&select=price&select=category",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "select",
+                  "value": "title"
+                },
+                {
+                  "key": "select",
+                  "value": "price"
+                },
+                {
+                  "key": "select",
+                  "value": "category"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delay Response",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/?delay=1000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "delay",
+                  "value": "1000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Authorizing Resources",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IP Address",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ip",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ip"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tools",
+      "item": [
+        {
+          "name": "2FA TOTP",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/2fa?key=JBSWY3DPEHPK3PXP",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "2fa"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "JBSWY3DPEHPK3PXP",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate 2FA TOTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"key\": \"JBSWY3DPEHPK3PXP\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/2fa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "2fa"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Custom response",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Parse the incoming JSON response\r",
+                  "const responseData = pm.response.json();\r",
+                  "\r",
+                  "// 2. Extract the full URL string\r",
+                  "const fullUrl = responseData.url; \r",
+                  "\r",
+                  "// 3. Extract everything after the very last forward slash \"/\"\r",
+                  "const lastCode = fullUrl.substring(fullUrl.lastIndexOf('/') + 1);\r",
+                  "\r",
+                  "// 4. Save this code into a Postman Environment Variable named \"extracted_code\"\r",
+                  "pm.environment.set(\"generated_api\", lastCode);\r",
+                  "\r",
+                  "// 5. Print it to the Postman Console so you can verify it worked\r",
+                  "console.log(\"Successfully saved code to ENV:\", lastCode);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"json\":{\r\n    \"message\": \"Hello from custome API\"\r\n  },\r\n  \"method\": \"GET\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/c/generate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "c",
+                "generate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Custom response my API",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/c/{{generated_api}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "c",
+                "{{generated_api}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dynamic Image",
+      "item": [
+        {
+          "name": "Generate square image",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/150",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "150"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "generate custom size image",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/500x200",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "500x200"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Image with custom text",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/400x200/008080/ffffff?text=Hello+Aashu",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "400x200",
+                "008080",
+                "ffffff"
+              ],
+              "query": [
+                {
+                  "key": "text",
+                  "value": "Hello+Aashu"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "generate image with custom color",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/400x200/282828",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "400x200",
+                "282828"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Image with different format",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/400x200?type=webp&text=I+am+a+webp+image",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "400x200"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "webp",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "I+am+a+webp+image",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Image with custom font family",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/400x200/282828?text=I+am+a+pacifico+font&fontFamily=pacifico",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "400x200",
+                "282828"
+              ],
+              "query": [
+                {
+                  "key": "text",
+                  "value": "I+am+a+pacifico+font"
+                },
+                {
+                  "key": "fontFamily",
+                  "value": "pacifico"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "custom image with custom font size",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/image/400x200/008080/ffffff?text=Hello+Aashu!&fontsize=15",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "image",
+                "400x200",
+                "008080",
+                "ffffff"
+              ],
+              "query": [
+                {
+                  "key": "text",
+                  "value": "Hello+Aashu!"
+                },
+                {
+                  "key": "fontsize",
+                  "value": "15"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Identicon",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/icon/abc123/150",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "icon",
+                "abc123",
+                "150"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login API",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let jsonData = pm.response.json();\r",
+                  "pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+                  "console.log(pm.environment.get(\"accessToken\"))"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"emilys\",\r\n    \"password\": \"emilyspass\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get current auth user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh auth session",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"refreshToken\": \"{{accessToken}}\",\r\n  \"expiresInMins\": 30\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "let jsonData = pm.response.json()\r",
+                  "\r",
+                  "pm.environment.set(\"productId\", jsonData.products[0].id)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Product Id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/products/{{productId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "search products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/search?q=phone",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "phone"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit and skip products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?limit=10&skip=10&select=title,price",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "skip",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "select",
+                  "value": "title,price",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sort products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product?sortBy=title&order=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "type": "text"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all products categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get product category list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/category-list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "category-list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product by category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/category/smartphones",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "category",
+                "smartphones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add new product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"BMW Pencil\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/products/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"iPhone Galaxy +1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"iPhone Galaxy +1\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Carts",
+      "item": [
+        {
+          "name": "Get all carts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "let jsonData = pm.response.json()\r",
+                  "\r",
+                  "pm.environment.set(\"cartsId\", jsonData.carts[0].id)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"iPhone Galaxy +1\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/carts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get a Single cart",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"iPhone Galaxy +1\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/user/5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "user",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get carts by user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"iPhone Galaxy +1\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/{{cartsId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "{{cartsId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a new cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": \"1\",\r\n    \"products\": [\r\n      {\r\n        \"id\": \"144\",\r\n        \"quantity\": \"4\"\r\n      },\r\n      {\r\n        \"id\": \"98\",\r\n        \"quantity\": \"1\"\r\n      }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a cart",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"merge\": true, // this will include existing products in the cart\r\n    \"products\": [\r\n      {\r\n        \"id\": \"1\",\r\n        \"quantity\": \"1\"\r\n      }\r\n    ]\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/{{cartsId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "{{cartsId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a cart",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"merge\": true, // this will include existing products in the cart\r\n    \"products\": [\r\n      {\r\n        \"id\": \"1\",\r\n        \"quantity\": \"1\"\r\n      }\r\n    ]\r\n  }"
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/{{cartsId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "{{cartsId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recipes",
+      "item": [
+        {
+          "name": "Get all recipes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "let jsonData = pm.response.json()\r",
+                  "\r",
+                  "pm.environment.set(\"recipesId\", jsonData.recipes[0].id)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes?limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single recipe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/{{recipesId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "{{recipesId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search recipes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/search?q=Margherita",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Margherita",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit and skip recipes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes?limit=10&skip=10&select=name,image",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "skip",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "select",
+                  "value": "name,image",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sort recipes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes?sortBy=name&order=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "name"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all recipes tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/tags",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "tags"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get recipes by tag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/tag/indian",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "tag",
+                "indian"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get recipes by a meal",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/meal-type/snack",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "meal-type",
+                "snack"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Recipe",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Tasty Pizza\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Recipe",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Tasty Pizza\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/{{recipesId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "{{recipesId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Recipes",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Tasty Pizza\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/{{recipesId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "{{recipesId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get current authenticated user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user and get tokens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let jsonData = pm.response.json();\r",
+                  "pm.environment.set(\"refreshToken\", jsonData.accessToken);\r",
+                  "console.log(pm.environment.get(\"refreshToken\"))"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"emilys\",\r\n    \"password\": \"emilyspass\",\r\n    \"expiresInMins\": \"30\" // optional, defaults to 60\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/search?q=John",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "John",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/filter?key=hair.color&value=Brown",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "hair.color"
+                },
+                {
+                  "key": "value",
+                  "value": "Brown"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit & skip users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users?limit=5&skip=10&select=firstName,age",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "skip",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "select",
+                  "value": "firstName,age",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sort and Order users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users?sortBy=firstName&order=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "firstName",
+                  "type": "text"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user carts by user id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/6/carts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "6",
+                "carts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get users posts by user id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/5/posts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "5",
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User todos by user id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/5/todos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "5",
+                "todos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a new user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Muhammad\",\r\n    \"lastName\": \"Ovi\",\r\n    \"age\": \"250\"\r\n    /* other user data */\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"lastName\": \"Owais\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Get all Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/search?q=love",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "love",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit and skip posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts?limit=10&skip=10&selectselect=title,reactions,userId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "skip",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "selectselect",
+                  "value": "title,reactions,userId",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sort posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts?sortBy=title&order=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "type": "text"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all posts tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/tags",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "tags"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get posts tag list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/tag-list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "tag-list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get posts by a tag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/tag/life",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "tag",
+                "life"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all posts by user id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/user/5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "user",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get posts comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/1/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "1",
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a new post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"I am in love with someone.\",\r\n    \"userId\": \"5\"\r\n    /* other post data */\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/posts/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"I think I should shift to the moon\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/posts/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"I am in love with someone.\",\r\n    \"userId\": \"5\"\r\n    /* other post data */\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/posts/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Get all comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single comment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/comments/1",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "comments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit and skip comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/comments?limit=10&skip=10&select=body,postId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comments"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "skip",
+                  "value": "10"
+                },
+                {
+                  "key": "select",
+                  "value": "body,postId"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all comments by post id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/comments/post/6",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "comments",
+                "post",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a new comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"body\": \"This makes all sense to me!\",\r\n    \"postId\": \"3\",\r\n    \"userId\": \"5\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/comments/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comments",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"body\": \"I think I should shift to the moon!\"\r\n  }"
+            },
+            "url": {
+              "raw": "{{base_url}}/comments/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"body\": \"I think I should shift to the moon!\"\r\n  }"
+            },
+            "url": {
+              "raw": "{{base_url}}/comments/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Todos",
+      "item": [
+        {
+          "name": "Get all todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get a single todo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todo/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todo",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a random todo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todo/random",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todo",
+                "random"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit and skip todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todos?limit=3&skip=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todos"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                },
+                {
+                  "key": "skip",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all todos by user id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todo/user/5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todo",
+                "user",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a new todo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"todo\": \"Use DummyJSON in the project\",\r\n    \"completed\": false,\r\n    \"userId\": \"5\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/todo/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todo",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a todo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"completed\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/todo/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todo",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a todo",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/todos/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "todos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Quotes",
+      "item": [
+        {
+          "name": "Get all quotes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get a single quote",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get random quote",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotes/random",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotes",
+                "random"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Limit and skip quotes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotes?limit=3&skip=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotes"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                },
+                {
+                  "key": "skip",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mock HTTP",
+      "item": [
+        {
+          "name": "Mock HTTP Response",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/http/200",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "http",
+                "200"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Custom HTTP Response",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/http/200/Hello_Aashu",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "http",
+                "200",
+                "Hello_Aashu"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
