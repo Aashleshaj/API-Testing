@@ -1,7 +1,7 @@
 import requests
 import pytest
 import os
-from tests.conftest import auth_token
+from conftest import auth_token
 from pathlib import Path
 from dotenv import load_dotenv
 script_dir = Path(__file__).parent
